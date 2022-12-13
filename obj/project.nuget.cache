@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "2jKkX28YYVU6payXlg13NMk9DoFgoC8dPKWqfzlS/SRGZFTJGlsFusWpGdio5xTfOO2KI7adqBOtZhS8G8hYnw==",
+  "success": true,
+  "projectFilePath": "E:\\ScorersReporter\\ScorersReporter\\ScorersReporter.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\csvhelper\\30.0.1\\csvhelper.30.0.1.nupkg.sha512",
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\ThinkPad T430\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
