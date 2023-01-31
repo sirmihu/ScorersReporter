@@ -1,9 +1,8 @@
-﻿using CsvHelper.Configuration.Attributes;
-
-namespace ScorersReporter.Models
+﻿namespace ScorersReporter.Models
 {
-    public class ScorersReport
+    public class Scorer
     {
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }

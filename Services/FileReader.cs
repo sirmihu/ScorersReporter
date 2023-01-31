@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace ScorersReporter.Services
 {
-    public class CSVService : ICSVService
+    public class FileReader
     {
         public IEnumerable<T> ReadCSV<T>(Stream file)
         {
@@ -17,8 +17,9 @@ namespace ScorersReporter.Services
             var options = new TypeConverterOptions { Formats = new[] { "dd.MM.yyyy" } };
             csv.Context.TypeConverterOptionsCache.AddOptions<DateTime>(options);
 
-            var scores = csv.GetRecords<T>();
-            return scores;
+            var records = csv.GetRecords<T>();
+
+            return records;
         }
     }
 }

@@ -1,14 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ScorersReporter.Models;
 using ScorersReporter.Services;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CsvHelper;
-using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
-using System.Globalization;
 
 namespace ScorersReporter.Controllers
 {
@@ -16,20 +8,23 @@ namespace ScorersReporter.Controllers
     [Route("[controller]")]
     public class ScorerController : Controller
     {
-        private readonly ICSVService _csvService;
+        private readonly IScorersReporterService _scorersReporterService;
 
-
-        public ScorerController(ICSVService csvService)
+        public ScorerController(IScorersReporterService scorersReporterService)
         {
-            _csvService = csvService;
+            _scorersReporterService = scorersReporterService;
+        }
+        
+
+        [HttpPost("SaveReportToDatabase")]
+        public async Task<IActionResult> SaveReportToDatabase([FromForm] IFormFileCollection file)
+        {
+            var records = _scorersReporterService.SaveToDatabase<Scorer>(file[0].OpenReadStream());
+
+            return Ok(records);
         }
 
-        [HttpPost("GetScorersReport")]
-        public async Task<IActionResult> GetScorersReportCSV([FromForm] IFormFileCollection file)
-        { 
-            var scorers = _csvService.ReadCSV<ScorersReport>(file[0].OpenReadStream());
-            return Ok(scorers);
-        }
+       
     }
 }
 

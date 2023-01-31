@@ -1,15 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using CsvHelper.Configuration.Attributes;
+﻿using CsvHelper.Configuration;
 using ScorersReporter.Models;
 
 
 namespace ScorersReporter
 {
-    public class ScorersReporterClassMap : ClassMap<ScorersReport>
+    public class ScorersReporterClassMap : ClassMap<Scorer>
     {
         public ScorersReporterClassMap()
         {
