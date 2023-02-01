@@ -24,7 +24,15 @@ namespace ScorersReporter.Controllers
             return Ok(records);
         }
 
-       
+        [HttpGet("GetReportFromDatabase")]
+        public ActionResult<IEnumerable<dynamic>> GetReportFromDatabase()
+        {
+            var records = _scorersReporterService.GetDbReport();
+
+            return Ok(records);
+        }
+
+
     }
 }
 
