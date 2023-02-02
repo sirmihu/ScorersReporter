@@ -63,6 +63,7 @@ namespace ScorersReporter.Controllers
 
             return result;
         }
+
     }
 }
 
