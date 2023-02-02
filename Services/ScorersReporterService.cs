@@ -10,14 +10,14 @@ namespace ScorersReporter.Services
         private readonly FileReader _fileReader;
         private readonly RateExchange _rateExchange;
         private readonly ScorerDetailsDtos _detailsDtos;
-        private readonly string filePath;
-        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, RateExchange rateExchange, ScorerDetailsDtos detailsDtos, string filePath)
+        private readonly FileDownloader _fileDownloader;
+        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, RateExchange rateExchange, ScorerDetailsDtos detailsDtos, FileDownloader fileDownloader)
         {
             _dbContext = dbContext;
             _fileReader = fileReader;
             _rateExchange = rateExchange;
             _detailsDtos = detailsDtos;
-            this.filePath = filePath;
+            _fileDownloader = fileDownloader;
         }
 
         public IEnumerable<T> SaveToDatabase<T>(Stream file)
@@ -109,13 +109,9 @@ namespace ScorersReporter.Services
 
         public FileContentResult DownloadCsvFile()
         {
-            var data = System.IO.File.ReadAllBytes(filePath);
-            var result = new FileContentResult(data, "application/csv")
-            {
-                FileDownloadName = "Scorers.csv"
-            };
-            return result;
+            var result = _fileDownloader.DownloadFile();
 
+            return result;
         }
 
     }
