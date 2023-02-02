@@ -23,22 +23,19 @@ namespace ScorersReporter.Services
 
             if (_dbContext.Database.CanConnect())
             {
-                if (!_dbContext.Scorers.Any())
-                {
-                    _dbContext.Scorers.AddRange((IEnumerable<Scorer>)records);
-                    _dbContext.SaveChanges();
-                }
+                _dbContext.Scorers.AddRange((IEnumerable<Scorer>)records);
+                _dbContext.SaveChanges();
             }
 
             return records;
         }
 
-        public IEnumerable<dynamic> GetDbReport()
+        public IEnumerable<dynamic> DbReport()
         {
             var scorersDtos = _detailsDtos.ScorerDto();
 
             var rate = _rateExchange.Rate().FirstOrDefault();
-       
+
             var records = scorersDtos.GroupBy(x => x.FullName)
                 .Select(g => new
                 {
@@ -54,7 +51,32 @@ namespace ScorersReporter.Services
                 }).ToList();
 
             return records;
-
         }
+
+        public IEnumerable<dynamic> LeagueReport()
+        {
+            var scorersDtos = _detailsDtos.ScorerDto();
+
+            var records = scorersDtos.GroupBy(x => x.FullName)
+                .Select(g => new
+                {
+                    Leauge = g.Select(s => s.League).FirstOrDefault(),
+                    FullName = g.Key,
+                    Age = g.Select(s => s.Age).FirstOrDefault(),
+                    Country = g.Select(s => s.Country).FirstOrDefault(),
+                    TotalGoals = g.Sum(s => s.Goals),
+                    TotalAssists = g.Sum(s => s.Assists),
+                    Club = g.Select(s => s.Club).FirstOrDefault(),
+                    MarketValueEUR = g.Select(s => s.MarketValueEUR).FirstOrDefault(),
+                    MarketVaulePLN = g.Select(s => s.MarketValuePLN).FirstOrDefault()
+                })
+                .OrderBy(g => g.Leauge)
+                .ToList();
+
+            return records;
+        }
+
+        //
+
     }
 }
