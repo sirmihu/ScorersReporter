@@ -24,30 +24,37 @@ namespace ScorersReporter.Controllers
             return Ok(records);
         }
 
-        [HttpGet("GetReportFromDatabase")]
-        public ActionResult<IEnumerable<dynamic>> GetReportFromDatabase()
+        [HttpGet("ReportFromDatabase")]
+        public ActionResult<IEnumerable<dynamic>> ReportFromDatabase()
         {
             var records = _scorersReporterService.DbReport();
 
             return Ok(records);
         }
 
-        [HttpGet("GetReportByLeague")]
-        public ActionResult<IEnumerable<dynamic>> GetReportByLeague()
+        [HttpGet("ReportByLeague")]
+        public ActionResult<IEnumerable<dynamic>> ReportByLeague()
         {
             var records = _scorersReporterService.LeagueReport();
 
             return Ok(records);
         }
 
-        [HttpGet("GetTopScorer")]
-        public ActionResult<IEnumerable<dynamic>> GetTopScorer()
+        [HttpGet("TopScorer")]
+        public ActionResult<IEnumerable<dynamic>> TopScorer()
         {
             var records = _scorersReporterService.TopScorer();
 
             return Ok(records);
         }
 
+        [HttpGet("Top5CanadiansClassificationScorers")]
+        public ActionResult<IEnumerable<dynamic>> Top5CCS()
+        {
+            var records = _scorersReporterService.Top5CCS();
+
+            return Ok(records);
+        }
     }
 }
 

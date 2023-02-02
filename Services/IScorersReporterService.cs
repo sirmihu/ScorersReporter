@@ -7,5 +7,6 @@ namespace ScorersReporter.Services
         public IEnumerable<dynamic> DbReport();
         public IEnumerable<dynamic> LeagueReport();
         public IEnumerable<dynamic> TopScorer();
+        public IEnumerable<dynamic> Top5CCS();
     }
 }

@@ -66,9 +66,7 @@ namespace ScorersReporter.Services
                     Country = g.Select(s => s.Country).FirstOrDefault(),
                     TotalGoals = g.Sum(s => s.Goals),
                     TotalAssists = g.Sum(s => s.Assists),
-                    Club = g.Select(s => s.Club).FirstOrDefault(),
-                    MarketValueEUR = g.Select(s => s.MarketValueEUR).FirstOrDefault(),
-                    MarketVaulePLN = g.Select(s => s.MarketValuePLN).FirstOrDefault()
+                    Club = g.Select(s => s.Club).FirstOrDefault()
                 })
                 .OrderBy(g => g.Leauge)
                 .ToList();
@@ -91,7 +89,20 @@ namespace ScorersReporter.Services
                 .ToList();
         }
 
-        //
+        public IEnumerable<dynamic> Top5CCS()
+        {
+            var scorersDtos = _detailsDtos.ScorerDto();
+
+            return scorersDtos.GroupBy(x => x.FullName)
+                .Select(g => new
+                {
+                    FullName = g.Key,
+                    Points = g.Sum(s => s.Points)
+                })
+                .OrderByDescending(g => g.Points)
+                .Take(5)
+                .ToList();
+        }
 
     }
 }
