@@ -1,5 +1,6 @@
 ﻿using ScorersReporter.Models;
 using ScorersReporter.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ScorersReporter.Services
 {
@@ -9,12 +10,14 @@ namespace ScorersReporter.Services
         private readonly FileReader _fileReader;
         private readonly RateExchange _rateExchange;
         private readonly ScorerDetailsDtos _detailsDtos;
-        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, RateExchange rateExchange, ScorerDetailsDtos detailsDtos)
+        private readonly string filePath;
+        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, RateExchange rateExchange, ScorerDetailsDtos detailsDtos, string filePath)
         {
             _dbContext = dbContext;
             _fileReader = fileReader;
             _rateExchange = rateExchange;
             _detailsDtos = detailsDtos;
+            this.filePath = filePath;
         }
 
         public IEnumerable<T> SaveToDatabase<T>(Stream file)
@@ -102,6 +105,17 @@ namespace ScorersReporter.Services
                 .OrderByDescending(g => g.Points)
                 .Take(5)
                 .ToList();
+        }
+
+        public FileContentResult DownloadCsvFile()
+        {
+            var data = System.IO.File.ReadAllBytes(filePath);
+            var result = new FileContentResult(data, "application/csv")
+            {
+                FileDownloadName = "Scorers.csv"
+            };
+            return result;
+
         }
 
     }

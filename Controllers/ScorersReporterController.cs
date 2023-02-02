@@ -55,6 +55,14 @@ namespace ScorersReporter.Controllers
 
             return Ok(records);
         }
+
+        [HttpGet("DownloadScorersReport")]
+        public FileContentResult DownloadScorersReport()
+        {
+            var result = _scorersReporterService.DownloadCsvFile();
+
+            return result;
+        }
     }
 }
 

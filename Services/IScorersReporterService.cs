@@ -1,4 +1,5 @@
-﻿
+﻿using Microsoft.AspNetCore.Mvc;
+
 namespace ScorersReporter.Services
 {
     public interface IScorersReporterService
@@ -8,5 +9,6 @@ namespace ScorersReporter.Services
         public IEnumerable<dynamic> LeagueReport();
         public IEnumerable<dynamic> TopScorer();
         public IEnumerable<dynamic> Top5CCS();
+        public FileContentResult DownloadCsvFile();
     }
 }
