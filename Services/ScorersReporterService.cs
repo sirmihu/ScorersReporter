@@ -76,6 +76,21 @@ namespace ScorersReporter.Services
             return records;
         }
 
+        public IEnumerable<dynamic> TopScorer()
+        {
+            var scorersDtos = _detailsDtos.ScorerDto();
+
+            return scorersDtos.GroupBy(x => x.FullName)
+                .Select(g => new
+                {
+                    FullName = g.Key,
+                    TotalGoals = g.Sum(s => s.Goals)
+                })
+                .OrderByDescending(g => g.TotalGoals)
+                .Take(1)
+                .ToList();
+        }
+
         //
 
     }

@@ -6,5 +6,6 @@ namespace ScorersReporter.Services
         public IEnumerable<T> SaveToDatabase<T>(Stream file);
         public IEnumerable<dynamic> DbReport();
         public IEnumerable<dynamic> LeagueReport();
+        public IEnumerable<dynamic> TopScorer();
     }
 }

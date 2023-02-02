@@ -40,7 +40,13 @@ namespace ScorersReporter.Controllers
             return Ok(records);
         }
 
-        //
+        [HttpGet("GetTopScorer")]
+        public ActionResult<IEnumerable<dynamic>> GetTopScorer()
+        {
+            var records = _scorersReporterService.TopScorer();
+
+            return Ok(records);
+        }
 
     }
 }
