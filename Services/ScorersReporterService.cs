@@ -33,11 +33,11 @@ namespace ScorersReporter.Services
             return records;
         }
 
-        public IEnumerable<dynamic> DbReport()
+        public async IAsyncEnumerable<dynamic> DbReport()
         {
             var scorersDtos = _detailsDtos.ScorerDto();
 
-            var rate = _rateExchange.Rate().FirstOrDefault();
+            var rate = await _rateExchange.Rate();
 
             var records = scorersDtos.GroupBy(x => x.FullName)
                 .Select(g => new
@@ -53,7 +53,7 @@ namespace ScorersReporter.Services
                     MarketVaulePLN = g.Select(s => s.MarketValueEUR * rate).FirstOrDefault()
                 }).ToList();
 
-            return records;
+            yield return records;
         }
 
         public IEnumerable<dynamic> LeagueReport()
@@ -64,14 +64,15 @@ namespace ScorersReporter.Services
                 .Select(g => new
                 {
                     Leauge = g.Select(s => s.League).FirstOrDefault(),
+                    Club = g.Select(s => s.Club).FirstOrDefault(),
                     FullName = g.Key,
                     Age = g.Select(s => s.Age).FirstOrDefault(),
                     Country = g.Select(s => s.Country).FirstOrDefault(),
                     TotalGoals = g.Sum(s => s.Goals),
-                    TotalAssists = g.Sum(s => s.Assists),
-                    Club = g.Select(s => s.Club).FirstOrDefault()
+                    TotalAssists = g.Sum(s => s.Assists)
                 })
                 .OrderBy(g => g.Leauge)
+                .GroupBy(g => g.Club)
                 .ToList();
 
             return records;

@@ -17,7 +17,7 @@ namespace ScorersReporter.Controllers
         
 
         [HttpPost("SaveReportToDatabase")]
-        public async Task<IActionResult> SaveReportToDatabase([FromForm] IFormFileCollection file)
+        public ActionResult SaveReportToDatabase([FromForm] IFormFileCollection file)
         {
             var records = _scorersReporterService.SaveToDatabase<Scorer>(file[0].OpenReadStream());
 

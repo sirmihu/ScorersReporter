@@ -5,19 +5,31 @@ namespace ScorersReporter.Services
 {
     public class RateExchange
     {
-        public IEnumerable<decimal> Rate()
+        public async Task<decimal> Rate()
         {
-            var httpClient = new HttpClient();
-            var baseAddress = "https://api.nbp.pl/api/exchangerates/rates/";
-            httpClient.BaseAddress = new Uri(baseAddress);
+            try
+            {
+                var httpClient = new HttpClient();
+                var baseAddress = "https://api.nbp.pl/api/exchangerates/rates/";
+                httpClient.BaseAddress = new Uri(baseAddress);
 
-            var response = httpClient.GetAsync("A/EUR/?format=json").Result;
-            var contentJson = response.Content.ReadAsStringAsync().Result;
-            var series = JsonConvert.DeserializeObject<ExchangeRatesSeries>(contentJson);
+                var response = await httpClient.GetAsync("A/EUR/?format=json");
+                if (response != null)
+                {
+                    var contentJson = await response.Content.ReadAsStringAsync();
+                    var series = JsonConvert.DeserializeObject<ExchangeRatesSeries>(contentJson);
+                    var rateValue = series.Rates.Select(x => x.Mid).FirstOrDefault();
+                    return rateValue;
+                }
+            }
 
-            var rateValue = series.Rates.Select(x => x.Mid);
-            
-            return rateValue;
+            catch
+            {
+               
+            }
+
+            return 0;
+
         }
     }
 }
