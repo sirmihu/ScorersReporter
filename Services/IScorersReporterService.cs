@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ScorersReporter.Models;
 
 namespace ScorersReporter.Services
 {
     public interface IScorersReporterService
     {
         public IEnumerable<T> SaveToDatabase<T>(Stream file);
-        public IAsyncEnumerable<dynamic> DbReport();
-        public IEnumerable<dynamic> LeagueReport();
-        public IEnumerable<dynamic> TopScorer();
-        public IEnumerable<dynamic> Top5CCS();
-        public FileContentResult DownloadCsvFile();
+        public Task<List<DbScorer>> DatabaseReport();
+        public List<LeagueScorer> LeagueReport(string league);
+        public List<TopScorer> TopScorerReport();
+        public List<CCScorer> Top5CCS();
+        public void DownloadCsvFile();
     }
 }

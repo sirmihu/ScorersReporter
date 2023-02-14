@@ -12,12 +12,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IScorersReporterService, ScorersReporterService>();
 builder.Services.AddDbContext<ScorersReportDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddSingleton(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Scorers.csv"));
 builder.Services.AddTransient<FileReader>();
 builder.Services.AddTransient<RateExchange>();
 builder.Services.AddTransient<ScorerDetailsDtos>();
-builder.Services.AddTransient<FileDownloader>();
-
+builder.Services.AddTransient<ReportFromDatabase>();
+builder.Services.AddTransient<FileWriter>();
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
 ﻿using ScorersReporter.Models;
 using ScorersReporter.Entities;
 using AutoMapper;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ScorersReporter.Services
 {
@@ -22,5 +23,6 @@ namespace ScorersReporter.Services
 
             return scorersDtos;
         }
+        
     }
 }

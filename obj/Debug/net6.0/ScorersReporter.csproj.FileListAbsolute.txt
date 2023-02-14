@@ -90,3 +90,8 @@ E:\ScorersReporter\ScorersReporter\bin\Debug\net6.0\System.Text.Json.dll
 E:\ScorersReporter\ScorersReporter\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 E:\ScorersReporter\ScorersReporter\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 E:\ScorersReporter\ScorersReporter\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\ScorersReporter\ScorersReporter\obj\Debug\net6.0\staticwebassets\msbuild.ScorersReporter.Microsoft.AspNetCore.StaticWebAssets.props
+E:\ScorersReporter\ScorersReporter\obj\Debug\net6.0\staticwebassets\msbuild.build.ScorersReporter.props
+E:\ScorersReporter\ScorersReporter\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ScorersReporter.props
+E:\ScorersReporter\ScorersReporter\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ScorersReporter.props
+E:\ScorersReporter\ScorersReporter\obj\Debug\net6.0\staticwebassets.pack.json

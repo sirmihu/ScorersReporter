@@ -1,6 +1,7 @@
 ﻿using ScorersReporter.Models;
 using ScorersReporter.Entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 
 namespace ScorersReporter.Services
 {
@@ -8,16 +9,16 @@ namespace ScorersReporter.Services
     {
         private readonly ScorersReportDbContext _dbContext;
         private readonly FileReader _fileReader;
-        private readonly RateExchange _rateExchange;
+        private readonly ReportFromDatabase _reportFromDatabase;
         private readonly ScorerDetailsDtos _detailsDtos;
-        private readonly FileDownloader _fileDownloader;
-        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, RateExchange rateExchange, ScorerDetailsDtos detailsDtos, FileDownloader fileDownloader)
+        private readonly FileWriter _fileWriter;
+        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, ReportFromDatabase reportFromDatabase, ScorerDetailsDtos detailsDtos, FileWriter fileWriter)
         {
             _dbContext = dbContext;
             _fileReader = fileReader;
-            _rateExchange = rateExchange;
+            _reportFromDatabase = reportFromDatabase;
             _detailsDtos = detailsDtos;
-            _fileDownloader = fileDownloader;
+            _fileWriter = fileWriter;
         }
 
         public IEnumerable<T> SaveToDatabase<T>(Stream file)
@@ -32,38 +33,27 @@ namespace ScorersReporter.Services
 
             return records;
         }
-
-        public async IAsyncEnumerable<dynamic> DbReport()
+    
+        public async Task<List<DbScorer>> DatabaseReport()
         {
-            var scorersDtos = _detailsDtos.ScorerDto();
+            var dbReport = await _reportFromDatabase.DbReport();
 
-            var rate = await _rateExchange.Rate();
-
-            var records = scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new
-                {
-                    FullName = g.Key,
-                    Age = g.Select(s => s.Age).FirstOrDefault(),
-                    Country = g.Select(s => s.Country).FirstOrDefault(),
-                    TotalGoals = g.Sum(s => s.Goals),
-                    TotalAssists = g.Sum(s => s.Assists),
-                    Club = g.Select(s => s.Club).FirstOrDefault(),
-                    Leauge = g.Select(s => s.League).FirstOrDefault(),
-                    MarketValueEUR = g.Select(s => s.MarketValueEUR).FirstOrDefault(),
-                    MarketVaulePLN = g.Select(s => s.MarketValueEUR * rate).FirstOrDefault()
-                }).ToList();
-
-            yield return records;
+            return dbReport;
         }
 
-        public IEnumerable<dynamic> LeagueReport()
+        public List<LeagueScorer> LeagueReport(string league)
         {
-            var scorersDtos = _detailsDtos.ScorerDto();
+            var scorersDtos = _detailsDtos.ScorerDto().AsQueryable();
+
+            if (!string.IsNullOrEmpty(league))
+            {
+                scorersDtos = scorersDtos.Where(s => s.League == league);
+            }
 
             var records = scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new
+                .Select(g => new LeagueScorer
                 {
-                    Leauge = g.Select(s => s.League).FirstOrDefault(),
+                    League = g.Select(s => s.League).FirstOrDefault(),
                     Club = g.Select(s => s.Club).FirstOrDefault(),
                     FullName = g.Key,
                     Age = g.Select(s => s.Age).FirstOrDefault(),
@@ -71,19 +61,18 @@ namespace ScorersReporter.Services
                     TotalGoals = g.Sum(s => s.Goals),
                     TotalAssists = g.Sum(s => s.Assists)
                 })
-                .OrderBy(g => g.Leauge)
-                .GroupBy(g => g.Club)
+                .OrderBy(g => g.Club)
                 .ToList();
-
+            
             return records;
         }
 
-        public IEnumerable<dynamic> TopScorer()
+        public List<TopScorer> TopScorerReport()
         {
             var scorersDtos = _detailsDtos.ScorerDto();
 
-            return scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new
+            var records = scorersDtos.GroupBy(x => x.FullName)
+                .Select(g => new TopScorer
                 {
                     FullName = g.Key,
                     TotalGoals = g.Sum(s => s.Goals)
@@ -91,14 +80,16 @@ namespace ScorersReporter.Services
                 .OrderByDescending(g => g.TotalGoals)
                 .Take(1)
                 .ToList();
+
+            return records;
         }
 
-        public IEnumerable<dynamic> Top5CCS()
+        public List<CCScorer> Top5CCS()
         {
             var scorersDtos = _detailsDtos.ScorerDto();
 
-            return scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new
+            var records = scorersDtos.GroupBy(x => x.FullName)
+                .Select(g => new CCScorer
                 {
                     FullName = g.Key,
                     Points = g.Sum(s => s.Points)
@@ -106,13 +97,13 @@ namespace ScorersReporter.Services
                 .OrderByDescending(g => g.Points)
                 .Take(5)
                 .ToList();
+
+            return records;
         }
 
-        public FileContentResult DownloadCsvFile()
+        public void DownloadCsvFile()
         {
-            var result = _fileDownloader.DownloadFile();
-
-            return result;
+            _fileWriter.WriteCSV();
         }
 
     }

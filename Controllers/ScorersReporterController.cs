@@ -25,31 +25,33 @@ namespace ScorersReporter.Controllers
         }
 
         [HttpGet("ReportFromDatabase")]
-        public ActionResult<IEnumerable<dynamic>> ReportFromDatabase()
+        public async Task<ActionResult<List<DbScorer>>> ReportFromDatabase()
         {
-            var records = _scorersReporterService.DbReport();
+            var records = await _scorersReporterService.DatabaseReport();
 
             return Ok(records);
         }
 
         [HttpGet("ReportByLeague")]
-        public ActionResult<IEnumerable<dynamic>> ReportByLeague()
+        public ActionResult<List<LeagueScorer>> ReportByLeague([FromQuery] string league)
         {
-            var records = _scorersReporterService.LeagueReport();
+            var records = _scorersReporterService.LeagueReport(league);       
 
             return Ok(records);
         }
 
+        
+
         [HttpGet("TopScorer")]
-        public ActionResult<IEnumerable<dynamic>> TopScorer()
+        public ActionResult<List<TopScorer>> TSReport()
         {
-            var records = _scorersReporterService.TopScorer();
+            var records = _scorersReporterService.TopScorerReport();
 
             return Ok(records);
         }
 
         [HttpGet("Top5CanadiansClassificationScorers")]
-        public ActionResult<IEnumerable<dynamic>> Top5CCS()
+        public ActionResult<List<CCScorer>> Top5CanadiansClassificationScorers()
         {
             var records = _scorersReporterService.Top5CCS();
 
@@ -57,11 +59,9 @@ namespace ScorersReporter.Controllers
         }
 
         [HttpGet("DownloadScorersReport")]
-        public FileContentResult DownloadScorersReport()
+        public void DownloadScorersReport()
         {
-            var result = _scorersReporterService.DownloadCsvFile();
-
-            return result;
+            _scorersReporterService.DownloadCsvFile();
         }
 
     }

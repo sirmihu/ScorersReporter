@@ -1,4 +1,6 @@
-﻿namespace ScorersReporter.Models
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace ScorersReporter.Models
 {
     public class ScorerDetails
     {
