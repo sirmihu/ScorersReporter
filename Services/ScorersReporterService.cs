@@ -34,14 +34,14 @@ namespace ScorersReporter.Services
             return records;
         }
     
-        public async Task<List<DbScorer>> DatabaseReport()
+        public async Task<List<ScorerViewModel>> DatabaseReport()
         {
             var dbReport = await _reportFromDatabase.DbReport();
 
             return dbReport;
         }
 
-        public List<LeagueScorer> LeagueReport(string league)
+        public List<ScorerViewModel> LeagueReport(string league)
         {
             var scorersDtos = _detailsDtos.ScorerDto().AsQueryable();
 
@@ -51,7 +51,7 @@ namespace ScorersReporter.Services
             }
 
             var records = scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new LeagueScorer
+                .Select(g => new ScorerViewModel
                 {
                     League = g.Select(s => s.League).FirstOrDefault(),
                     Club = g.Select(s => s.Club).FirstOrDefault(),
@@ -67,12 +67,12 @@ namespace ScorersReporter.Services
             return records;
         }
 
-        public List<TopScorer> TopScorerReport()
+        public List<TopScorerViewModel> TopScorerReport()
         {
             var scorersDtos = _detailsDtos.ScorerDto();
 
             var records = scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new TopScorer
+                .Select(g => new TopScorerViewModel
                 {
                     FullName = g.Key,
                     TotalGoals = g.Sum(s => s.Goals)
@@ -84,12 +84,12 @@ namespace ScorersReporter.Services
             return records;
         }
 
-        public List<CCScorer> Top5CCS()
+        public List<CanadianScorerViewModel> Top5CCS()
         {
             var scorersDtos = _detailsDtos.ScorerDto();
 
             var records = scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new CCScorer
+                .Select(g => new CanadianScorerViewModel
                 {
                     FullName = g.Key,
                     Points = g.Sum(s => s.Points)

@@ -15,11 +15,11 @@ namespace ScorersReporter.Services
             _mapper = mapper;
         }
 
-        public List<ScorerDetails> ScorerDto()
+        public List<ScorerViewModel> ScorerDto()
         {
             var scorers = _dbContext.Scorers.ToList();
 
-            var scorersDtos = _mapper.Map<List<ScorerDetails>>(scorers);
+            var scorersDtos = _mapper.Map<List<ScorerViewModel>>(scorers);
 
             return scorersDtos;
         }
