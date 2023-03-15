@@ -23,7 +23,7 @@ namespace ScorersReporter.Services
 
         public IEnumerable<T> SaveToDatabase<T>(Stream file)
         {
-            var records = _fileReader.ReadCSV<T>(file);
+            var records = _fileReader.ReadCsv<T>(file);
 
             if (_dbContext.Database.CanConnect())
             {
@@ -34,14 +34,14 @@ namespace ScorersReporter.Services
             return records;
         }
     
-        public async Task<List<ScorerViewModel>> DatabaseReport()
+        public async Task<List<ScorerViewModel11>> DatabaseReport()
         {
             var dbReport = await _reportFromDatabase.DbReport();
 
             return dbReport;
         }
 
-        public List<ScorerViewModel> LeagueReport(string league)
+        public List<ScorerByLeagueViewModel> LeagueReport(string league)
         {
             var scorersDtos = _detailsDtos.ScorerDto().AsQueryable();
 
@@ -51,7 +51,7 @@ namespace ScorersReporter.Services
             }
 
             var records = scorersDtos.GroupBy(x => x.FullName)
-                .Select(g => new ScorerViewModel
+                .Select(g => new ScorerByLeagueViewModel
                 {
                     League = g.Select(s => s.League).FirstOrDefault(),
                     Club = g.Select(s => s.Club).FirstOrDefault(),

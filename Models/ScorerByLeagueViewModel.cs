@@ -1,6 +1,6 @@
 ﻿namespace ScorersReporter.Models
 {
-    public class LeagueScorer
+    public class ScorerByLeagueViewModel
     {
         public string League { get; set; }
         public string Club { get; set; }

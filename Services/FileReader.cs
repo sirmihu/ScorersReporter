@@ -7,7 +7,7 @@ namespace ScorersReporter.Services
 {
     public class FileReader
     {
-        public IEnumerable<T> ReadCSV<T>(Stream file)
+        public IEnumerable<T> ReadCsv<T>(Stream file)
         {
             var reader = new StreamReader(file);
             var config = new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";" };

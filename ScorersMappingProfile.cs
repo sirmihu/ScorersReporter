@@ -7,9 +7,20 @@ namespace ScorersReporter
     {
         public ScorersMappingProfile()
         {
-            CreateMap<Scorer, ScorerViewModel>();
             CreateMap<Scorer, ScorerViewModel>()
-                .ForMember(m => m.FullName, c => c.MapFrom(s => s.FirstName + " " + s.LastName));
+                .ConstructUsing((source, destination) => 
+                {
+                    int now = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                    int dob = int.Parse(source.DateOfBirth.ToString("yyyyMMdd"));
+                    var age = (now - dob) / 10000;
+
+                    return new ScorerViewModel 
+                    {
+                        FullName = source.FirstName + " " + source.LastName,
+                        Age = age,
+                        TotalGoals = 
+                    }
+                })
         }
     }
 }

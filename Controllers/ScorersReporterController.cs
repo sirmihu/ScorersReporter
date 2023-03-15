@@ -16,24 +16,24 @@ namespace ScorersReporter.Controllers
         }
         
 
-        [HttpPost("SaveReportToDatabase")]
-        public ActionResult SaveReportToDatabase([FromForm] IFormFileCollection file)
+        [HttpPost("SaveFileToDatabase")]
+        public ActionResult SaveFileToDatabase([FromForm] IFormFileCollection file)
         {
             var records = _scorersReporterService.SaveToDatabase<Scorer>(file[0].OpenReadStream());
           
             return Ok(records);
         }
 
-        [HttpGet("ReportFromDatabase")]
-        public async Task<ActionResult<List<ScorerViewModel>>> ReportFromDatabase()
+        [HttpGet("GetScorersReport")]
+        public async Task<ActionResult<List<ScorerViewModel11>>> GetScorersReport()
         {
             var records = await _scorersReporterService.DatabaseReport();
 
             return Ok(records);
         }
 
-        [HttpGet("ReportByLeague")]
-        public ActionResult<List<ScorerViewModel>> ReportByLeague([FromQuery] string league)
+        [HttpGet("GetScorersByLeague")]
+        public ActionResult<List<ScorerByLeagueViewModel>> GetScorersByLeague([FromQuery] string league)
         {
             var records = _scorersReporterService.LeagueReport(league);       
 
@@ -42,24 +42,24 @@ namespace ScorersReporter.Controllers
 
         
 
-        [HttpGet("TopScorer")]
-        public ActionResult<List<ScorerViewModel>> TSReport()
+        [HttpGet("GetTopScorer")]
+        public ActionResult<TopScorerViewModel> GetTopScorer()
         {
             var records = _scorersReporterService.TopScorerReport();
 
             return Ok(records);
         }
 
-        [HttpGet("Top5CanadiansClassificationScorers")]
-        public ActionResult<List<ScorerViewModel>> Top5CanadiansClassificationScorers()
+        [HttpGet("GetTop5CanadiansClassificationScorers")]
+        public ActionResult<List<CanadianScorerViewModel>> GetTop5CanadiansClassificationScorers()
         {
             var records = _scorersReporterService.Top5CCS();
 
             return Ok(records);
         }
 
-        [HttpGet("DownloadScorersReport")]
-        public void DownloadScorersReport()
+        [HttpGet("SaveScorersReportOnDesktop")]
+        public void SaveScorersReportOnDesktop()
         {
             _scorersReporterService.DownloadCsvFile();
         }

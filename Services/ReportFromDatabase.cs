@@ -1,36 +1,38 @@
-﻿using ScorersReporter.Models;
+﻿using AutoMapper;
+using ScorersReporter.Entities;
+using ScorersReporter.Models;
 
 namespace ScorersReporter.Services
 {
     public class ReportFromDatabase
     {
         private readonly RateExchange _rateExchange;
-        private readonly ScorerDetailsDtos _detailsDtos;
-        public ReportFromDatabase(RateExchange rateExchange, ScorerDetailsDtos detailsDtos)
+        private readonly ScorersReportDbContext _dbContext;
+        private readonly IMapper _mapper;
+        public ReportFromDatabase(RateExchange rateExchange, ScorersReportDbContext dbContext, IMapper mapper)
         {
             _rateExchange = rateExchange;
-            _detailsDtos = detailsDtos;
+            _dbContext = dbContext;
+            _mapper = mapper;
         }
         public async Task<List<ScorerViewModel>> DbReport()
         {
-            var scorersDtos = _detailsDtos.ScorerDto().ToList();
+            var scorers = _dbContext.Scorers;
 
             var rate = await _rateExchange.Rate();
 
-            var records = scorersDtos.GroupBy(x => x.FullName)
+            var scorersVM = _mapper.Map<List<ScorerViewModel>>(scorers);
+
+            var records = scorersVM.GroupBy(x => x.FullName)
                 .Select(g => new ScorerViewModel
                 {
                     FullName = g.Key,
-                    FirstName = g.Select(s => s.FirstName).FirstOrDefault(),
-                    LastName = g.Select(s => s.LastName).FirstOrDefault(),
                     Age = g.Select(s => s.Age).FirstOrDefault(),
-                    DateOfBirth = g.Select(s => s.DateOfBirth).FirstOrDefault(),
                     Country = g.Select(s => s.Country).FirstOrDefault(),
                     TotalGoals = g.Sum(s => s.Goals),
                     TotalAssists = g.Sum(s => s.Assists),
                     Club = g.Select(s => s.Club).FirstOrDefault(),
                     League = g.Select(s => s.League).FirstOrDefault(),
-                    MarketValue = g.Select(s => s.MarketValue).FirstOrDefault(),
                     MarketValueEUR = g.Select(s => s.MarketValueEUR).FirstOrDefault(),
                     MarketValuePLN = g.Select(s => s.MarketValueEUR * rate).FirstOrDefault()
                 }).ToList();
