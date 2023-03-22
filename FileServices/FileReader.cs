@@ -3,7 +3,7 @@ using CsvHelper.Configuration;
 using CsvHelper.TypeConversion;
 using System.Globalization;
 
-namespace ScorersReporter.Services
+namespace ScorersReporter.FileServices
 {
     public class FileReader
     {

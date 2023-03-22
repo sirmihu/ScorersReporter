@@ -4,26 +4,26 @@ using ScorersReporter.Models;
 
 namespace ScorersReporter.Services
 {
-    public class ReportFromDatabase
+    public class ReportFromDatabase : IReportFromDatabase
     {
         private readonly RateExchange _rateExchange;
         private readonly ScorersReportDbContext _dbContext;
         private readonly IMapper _mapper;
-        public ReportFromDatabase(RateExchange rateExchange, ScorersReportDbContext dbContext, IMapper mapper)
+        private readonly ScorerMapToScorerDetails _scorerDetails;
+        public ReportFromDatabase(RateExchange rateExchange, ScorersReportDbContext dbContext, IMapper mapper, ScorerMapToScorerDetails scorerDetails)
         {
             _rateExchange = rateExchange;
             _dbContext = dbContext;
             _mapper = mapper;
+            _scorerDetails = scorerDetails;
         }
         public async Task<List<ScorerViewModel>> DbReport()
         {
-            var scorers = _dbContext.Scorers;
+            var scorersDetails = _scorerDetails.ScorerDetails().ToList();
 
             var rate = await _rateExchange.Rate();
 
-            var scorersVM = _mapper.Map<List<ScorerViewModel>>(scorers);
-
-            var records = scorersVM.GroupBy(x => x.FullName)
+            var records = scorersDetails.GroupBy(x => x.FullName)
                 .Select(g => new ScorerViewModel
                 {
                     FullName = g.Key,

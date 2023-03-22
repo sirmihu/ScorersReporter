@@ -1,14 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ScorersReporter.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ScorersReporter.Entities
 {
     public class ScorersReportDbContext : DbContext
     {
-        private string _connectionString =
-            "Server=(localdb)\\mssqllocaldb;DataBase=ScorersDb;Trusted_Connection=True;";
+        private readonly AppSettings _appSettings;
+        /*private readonly string _connectionString;*/
+
+        public ScorersReportDbContext(IOptions<AppSettings> options, IConfiguration configuration)
+        {
+            _appSettings = options.Value;
+           /* var x = configuration.GetSection("ConnectionStrings:DatabaseAddress").Value;*/
+        }
+
         public DbSet<Scorer> Scorers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -18,8 +24,7 @@ namespace ScorersReporter.Entities
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-           
-            optionsBuilder.UseSqlServer(_connectionString);
+            optionsBuilder.UseSqlServer(_appSettings.DatabaseAddress);
         }
     }
 }

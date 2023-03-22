@@ -5,11 +5,11 @@ namespace ScorersReporter.Services
 {
     public interface IScorersReporterService
     {
-        public IEnumerable<T> SaveToDatabase<T>(Stream file);
-        public Task<List<ScorerViewModel11>> DatabaseReport();
-        public List<ScorerByLeagueViewModel> LeagueReport(string league);
-        public List<TopScorerViewModel> TopScorerReport();
-        public List<CanadianScorerViewModel> Top5CCS();
-        public void DownloadCsvFile();
+        IEnumerable<T> SaveToDatabase<T>(Stream file);
+        Task<List<ScorerViewModel>> DatabaseReport();
+        List<ScorerByLeagueViewModel> LeagueReport(string league);
+        List<TopScorerViewModel> TopScorerReport();
+        List<CanadianScorerViewModel> Top5CCS();
+        Task DownloadCsvFile();
     }
 }

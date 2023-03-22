@@ -14,18 +14,18 @@ namespace ScorersReporter.Controllers
         {
             _scorersReporterService = scorersReporterService;
         }
-        
+
 
         [HttpPost("SaveFileToDatabase")]
         public ActionResult SaveFileToDatabase([FromForm] IFormFileCollection file)
         {
             var records = _scorersReporterService.SaveToDatabase<Scorer>(file[0].OpenReadStream());
-          
+
             return Ok(records);
         }
 
         [HttpGet("GetScorersReport")]
-        public async Task<ActionResult<List<ScorerViewModel11>>> GetScorersReport()
+        public async Task<ActionResult<List<ScorerViewModel>>> GetScorersReport()
         {
             var records = await _scorersReporterService.DatabaseReport();
 
@@ -35,12 +35,12 @@ namespace ScorersReporter.Controllers
         [HttpGet("GetScorersByLeague")]
         public ActionResult<List<ScorerByLeagueViewModel>> GetScorersByLeague([FromQuery] string league)
         {
-            var records = _scorersReporterService.LeagueReport(league);       
+            var records = _scorersReporterService.LeagueReport(league);
 
             return Ok(records);
         }
 
-        
+
 
         [HttpGet("GetTopScorer")]
         public ActionResult<TopScorerViewModel> GetTopScorer()

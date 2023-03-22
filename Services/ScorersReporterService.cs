@@ -2,6 +2,7 @@
 using ScorersReporter.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
+using ScorersReporter.FileServices;
 
 namespace ScorersReporter.Services
 {
@@ -9,16 +10,22 @@ namespace ScorersReporter.Services
     {
         private readonly ScorersReportDbContext _dbContext;
         private readonly FileReader _fileReader;
-        private readonly ReportFromDatabase _reportFromDatabase;
-        private readonly ScorerDetailsDtos _detailsDtos;
         private readonly FileWriter _fileWriter;
-        public ScorersReporterService(ScorersReportDbContext dbContext, FileReader fileReader, ReportFromDatabase reportFromDatabase, ScorerDetailsDtos detailsDtos, FileWriter fileWriter)
+        private readonly ScorerMapToScorerDetails _scorerDetails;
+        private readonly IFileServices _fileServices;
+        private readonly IReportFromDatabase _reportFromDatabase;
+        public ScorersReporterService(
+            ScorersReportDbContext dbContext, 
+            FileReader fileReader, 
+            IReportFromDatabase reportFromDatabase, 
+            ScorerMapToScorerDetails scorerDetails, 
+            IFileServices fileServices)
         {
             _dbContext = dbContext;
             _fileReader = fileReader;
             _reportFromDatabase = reportFromDatabase;
-            _detailsDtos = detailsDtos;
-            _fileWriter = fileWriter;
+            _scorerDetails = scorerDetails;
+            _fileServices = fileServices;
         }
 
         public IEnumerable<T> SaveToDatabase<T>(Stream file)
@@ -34,7 +41,7 @@ namespace ScorersReporter.Services
             return records;
         }
     
-        public async Task<List<ScorerViewModel11>> DatabaseReport()
+        public async Task<List<ScorerViewModel>> DatabaseReport()
         {
             var dbReport = await _reportFromDatabase.DbReport();
 
@@ -43,14 +50,15 @@ namespace ScorersReporter.Services
 
         public List<ScorerByLeagueViewModel> LeagueReport(string league)
         {
-            var scorersDtos = _detailsDtos.ScorerDto().AsQueryable();
+            var scorerDetails = _scorerDetails.ScorerDetails().AsQueryable();
+
 
             if (!string.IsNullOrEmpty(league))
             {
-                scorersDtos = scorersDtos.Where(s => s.League == league);
+                scorerDetails = scorerDetails.Where(s => s.League == league);
             }
 
-            var records = scorersDtos.GroupBy(x => x.FullName)
+            var scorerByLeague = scorerDetails.GroupBy(x => x.FullName)
                 .Select(g => new ScorerByLeagueViewModel
                 {
                     League = g.Select(s => s.League).FirstOrDefault(),
@@ -64,14 +72,14 @@ namespace ScorersReporter.Services
                 .OrderBy(g => g.Club)
                 .ToList();
             
-            return records;
+            return scorerByLeague;
         }
 
         public List<TopScorerViewModel> TopScorerReport()
         {
-            var scorersDtos = _detailsDtos.ScorerDto();
+            var scorerDetails = _scorerDetails.ScorerDetails();
 
-            var records = scorersDtos.GroupBy(x => x.FullName)
+            var topScorer = scorerDetails.GroupBy(x => x.FullName)
                 .Select(g => new TopScorerViewModel
                 {
                     FullName = g.Key,
@@ -81,14 +89,14 @@ namespace ScorersReporter.Services
                 .Take(1)
                 .ToList();
 
-            return records;
+            return topScorer;
         }
 
         public List<CanadianScorerViewModel> Top5CCS()
         {
-            var scorersDtos = _detailsDtos.ScorerDto();
+            var scorerDetails = _scorerDetails.ScorerDetails();
 
-            var records = scorersDtos.GroupBy(x => x.FullName)
+            var topCanadiansClassificationScorers = scorerDetails.GroupBy(x => x.FullName)
                 .Select(g => new CanadianScorerViewModel
                 {
                     FullName = g.Key,
@@ -98,12 +106,17 @@ namespace ScorersReporter.Services
                 .Take(5)
                 .ToList();
 
-            return records;
+            return topCanadiansClassificationScorers;
         }
 
-        public void DownloadCsvFile()
+        public async Task DownloadCsvFile()
         {
-            _fileWriter.WriteCSV();
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var filePath = desktopPath + ""; //appsettingsy
+
+            var records = await _reportFromDatabase.DbReport();
+
+            _fileServices.WriteCSV(records, filePath);
         }
 
     }

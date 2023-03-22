@@ -1,7 +1,6 @@
 ﻿using CsvHelper.Configuration;
 using ScorersReporter.Models;
 
-
 namespace ScorersReporter
 {
     public class ScorersReporterClassMap : ClassMap<Scorer>
