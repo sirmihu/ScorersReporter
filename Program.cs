@@ -1,9 +1,11 @@
 using ScorersReporter.Services;
 using ScorersReporter.Entities;
+using ScorersReporter.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -12,12 +14,15 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IScorersReporterService, ScorersReporterService>();
 builder.Services.AddDbContext<ScorersReportDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.AddSingleton(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Scorers.csv"));
-builder.Services.AddTransient<FileReader>();
+builder.Services.AddTransient<IFileServices, FileServices>();
 builder.Services.AddTransient<RateExchange>();
-builder.Services.AddTransient<ScorerDetailsDtos>();
-builder.Services.AddTransient<FileDownloader>();
+builder.Services.AddTransient<IScorerMapToScorerDetails, ScorerMapToScorerDetails>();
+builder.Services.AddTransient<IReportFromDatabase, ReportFromDatabase>();
 
+builder.Services.AddOptions();
+
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("WriteFilePath"));
 
 var app = builder.Build();
 

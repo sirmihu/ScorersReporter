@@ -14,54 +14,54 @@ namespace ScorersReporter.Controllers
         {
             _scorersReporterService = scorersReporterService;
         }
-        
 
-        [HttpPost("SaveReportToDatabase")]
-        public ActionResult SaveReportToDatabase([FromForm] IFormFileCollection file)
+
+        [HttpPost("SaveFileToDatabase")]
+        public ActionResult SaveFileToDatabase([FromForm] IFormFileCollection file)
         {
             var records = _scorersReporterService.SaveToDatabase<Scorer>(file[0].OpenReadStream());
 
             return Ok(records);
         }
 
-        [HttpGet("ReportFromDatabase")]
-        public ActionResult<IEnumerable<dynamic>> ReportFromDatabase()
+        [HttpGet("GetScorersReport")]
+        public async Task<ActionResult<List<ScorerViewModel>>> GetScorersReport()
         {
-            var records = _scorersReporterService.DbReport();
+            var records = await _scorersReporterService.DatabaseReport();
 
             return Ok(records);
         }
 
-        [HttpGet("ReportByLeague")]
-        public ActionResult<IEnumerable<dynamic>> ReportByLeague()
+        [HttpGet("GetScorersByLeague")]
+        public ActionResult<List<ScorerByLeagueViewModel>> GetScorersByLeague([FromQuery] string league)
         {
-            var records = _scorersReporterService.LeagueReport();
+            var records = _scorersReporterService.LeagueReport(league);
 
             return Ok(records);
         }
 
-        [HttpGet("TopScorer")]
-        public ActionResult<IEnumerable<dynamic>> TopScorer()
+
+
+        [HttpGet("GetTopScorer")]
+        public ActionResult<TopScorerViewModel> GetTopScorer()
         {
-            var records = _scorersReporterService.TopScorer();
+            var records = _scorersReporterService.TopScorerReport();
 
             return Ok(records);
         }
 
-        [HttpGet("Top5CanadiansClassificationScorers")]
-        public ActionResult<IEnumerable<dynamic>> Top5CCS()
+        [HttpGet("GetTop5CanadiansClassificationScorers")]
+        public ActionResult<List<CanadianScorerViewModel>> GetTop5CanadiansClassificationScorers()
         {
             var records = _scorersReporterService.Top5CCS();
 
             return Ok(records);
         }
 
-        [HttpGet("DownloadScorersReport")]
-        public FileContentResult DownloadScorersReport()
+        [HttpGet("SaveScorersReportOnDesktop")]
+        public void SaveScorersReportOnDesktop()
         {
-            var result = _scorersReporterService.DownloadCsvFile();
-
-            return result;
+            _scorersReporterService.DownloadCsvFile();
         }
 
     }

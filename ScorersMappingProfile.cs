@@ -7,8 +7,7 @@ namespace ScorersReporter
     {
         public ScorersMappingProfile()
         {
-            CreateMap<Scorer, ScorerDetails>()
-                .ForMember(m => m.FullName, c => c.MapFrom(s => s.FirstName + " " + s.LastName));
+            CreateMap<Scorer, ScorerDetails>();
         }
     }
 }
