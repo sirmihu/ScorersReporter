@@ -1,20 +1,15 @@
-﻿using AutoMapper;
-using ScorersReporter.Entities;
-using ScorersReporter.Models;
+﻿using ScorersReporter.Models;
 
 namespace ScorersReporter.Services
 {
     public class ReportFromDatabase : IReportFromDatabase
     {
         private readonly RateExchange _rateExchange;
-        private readonly ScorersReportDbContext _dbContext;
-        private readonly IMapper _mapper;
-        private readonly ScorerMapToScorerDetails _scorerDetails;
-        public ReportFromDatabase(RateExchange rateExchange, ScorersReportDbContext dbContext, IMapper mapper, ScorerMapToScorerDetails scorerDetails)
+        private readonly IScorerMapToScorerDetails _scorerDetails;
+        public ReportFromDatabase(RateExchange rateExchange, 
+            IScorerMapToScorerDetails scorerDetails)
         {
             _rateExchange = rateExchange;
-            _dbContext = dbContext;
-            _mapper = mapper;
             _scorerDetails = scorerDetails;
         }
         public async Task<List<ScorerViewModel>> DbReport()

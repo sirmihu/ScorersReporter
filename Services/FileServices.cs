@@ -1,4 +1,6 @@
 ﻿using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.TypeConversion;
 using System.Globalization;
 
 namespace ScorersReporter.Services
@@ -7,14 +9,27 @@ namespace ScorersReporter.Services
     {
         public void WriteCSV<T>(List<T> records, string filePath)
         {
-            //string filePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-            using (var writer = new StreamWriter(filePath))        //(filePath + "\\ScorersReport.csv"))
+            using (var writer = new StreamWriter(filePath))
             using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.WriteRecords(records);
             }
         }
 
+        public IEnumerable<T> ReadCSV<T>(Stream file)
+        {
+            var reader = new StreamReader(file);
+            var config = new CsvConfiguration(CultureInfo.CurrentCulture) { Delimiter = ";" };
+            var csv = new CsvReader(reader, config);
+            csv.Context.RegisterClassMap<ScorersReporterClassMap>();
+
+            var options = new TypeConverterOptions { Formats = new[] { "dd.MM.yyyy" } };
+            csv.Context.TypeConverterOptionsCache.AddOptions<DateTime>(options);
+
+            var records = csv.GetRecords<T>();
+
+            return records;
+
+        }
     }
 }

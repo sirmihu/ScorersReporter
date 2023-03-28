@@ -4,7 +4,7 @@ using AutoMapper;
 
 namespace ScorersReporter.Services
 {
-    public class ScorerMapToScorerDetails
+    public class ScorerMapToScorerDetails : IScorerMapToScorerDetails
     {
         private readonly ScorersReportDbContext _dbContext;
         private readonly IMapper _mapper;

@@ -1,7 +1,6 @@
 using ScorersReporter.Services;
 using ScorersReporter.Entities;
 using ScorersReporter.Models;
-using ScorersReporter.FileServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +16,13 @@ builder.Services.AddDbContext<ScorersReportDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IFileServices, FileServices>();
 builder.Services.AddTransient<RateExchange>();
-builder.Services.AddTransient<ScorerMapToScorerDetails>();
-builder.Services.AddTransient<ReportFromDatabase>();
+builder.Services.AddTransient<IScorerMapToScorerDetails, ScorerMapToScorerDetails>();
+builder.Services.AddTransient<IReportFromDatabase, ReportFromDatabase>();
 
 builder.Services.AddOptions();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("WriteFilePath"));
 
 var app = builder.Build();
 

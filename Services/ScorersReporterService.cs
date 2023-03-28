@@ -1,36 +1,33 @@
 ﻿using ScorersReporter.Models;
 using ScorersReporter.Entities;
-using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
-using ScorersReporter.FileServices;
+using Microsoft.Extensions.Options;
 
 namespace ScorersReporter.Services
 {
     public class ScorersReporterService : IScorersReporterService
     {
         private readonly ScorersReportDbContext _dbContext;
-        private readonly FileReader _fileReader;
-        private readonly FileWriter _fileWriter;
-        private readonly ScorerMapToScorerDetails _scorerDetails;
+        private readonly IScorerMapToScorerDetails _scorerDetails;
         private readonly IFileServices _fileServices;
         private readonly IReportFromDatabase _reportFromDatabase;
+        private readonly AppSettings _appSettings;
         public ScorersReporterService(
-            ScorersReportDbContext dbContext, 
-            FileReader fileReader, 
+            ScorersReportDbContext dbContext,  
             IReportFromDatabase reportFromDatabase, 
-            ScorerMapToScorerDetails scorerDetails, 
-            IFileServices fileServices)
+            IScorerMapToScorerDetails scorerDetails, 
+            IFileServices fileServices,
+            IOptions<AppSettings> options)
         {
             _dbContext = dbContext;
-            _fileReader = fileReader;
             _reportFromDatabase = reportFromDatabase;
             _scorerDetails = scorerDetails;
             _fileServices = fileServices;
+            _appSettings = options.Value;
         }
 
         public IEnumerable<T> SaveToDatabase<T>(Stream file)
         {
-            var records = _fileReader.ReadCsv<T>(file);
+            var records = _fileServices.ReadCSV<T>(file);
 
             if (_dbContext.Database.CanConnect())
             {
@@ -112,7 +109,7 @@ namespace ScorersReporter.Services
         public async Task DownloadCsvFile()
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            var filePath = desktopPath + ""; //appsettingsy
+            var filePath = desktopPath + _appSettings.FileName;
 
             var records = await _reportFromDatabase.DbReport();
 
