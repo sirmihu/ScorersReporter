@@ -3,17 +3,18 @@ using Newtonsoft.Json;
 
 namespace ScorersReporter.Services
 {
-    public class RateExchange
+    public class NBPApiService
     {
-        public async Task<decimal> Rate()
+        public async Task<decimal> GetRate()
         {
             try
             {
                 var httpClient = new HttpClient();
-                var baseAddress = "https://api.nbp.pl/api/exchangerates/rates/";
+                var baseAddress = "https://api.nbp.pl/api/exchangerates/rates/"; //appsettings
                 httpClient.BaseAddress = new Uri(baseAddress);
 
-                var response = await httpClient.GetAsync("A/EUR/?format=json");
+                var response = await httpClient.GetAsync("A/EUR/?format=json"); //tez
+
                 if (response != null)
                 {
                     var contentJson = await response.Content.ReadAsStringAsync();
@@ -21,9 +22,11 @@ namespace ScorersReporter.Services
                     var rateValue = series.Rates.Select(x => x.Mid).FirstOrDefault();
                     return rateValue;
                 }
+
+
             }
 
-            catch
+            catch(HttpRequestException ex)
             {
                
             }

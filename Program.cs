@@ -15,7 +15,7 @@ builder.Services.AddScoped<IScorersReporterService, ScorersReporterService>();
 builder.Services.AddDbContext<ScorersReportDbContext>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IFileServices, FileServices>();
-builder.Services.AddTransient<RateExchange>();
+builder.Services.AddTransient<NBPApiService>();
 builder.Services.AddTransient<IScorerMapToScorerDetails, ScorerMapToScorerDetails>();
 builder.Services.AddTransient<IReportFromDatabase, ReportFromDatabase>();
 
