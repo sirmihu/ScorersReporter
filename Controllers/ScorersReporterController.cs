@@ -17,11 +17,11 @@ namespace ScorersReporter.Controllers
 
 
         [HttpPost("SaveFileToDatabase")]
-        public ActionResult SaveFileToDatabase([FromForm] IFormFileCollection file)
+        public ActionResult SaveFileToDatabase([FromForm] ScorerFile scorerFile)
         {
-            var records = _scorersReporterService.SaveToDatabase<Scorer>(file[0].OpenReadStream());
-
-            return Ok(records);
+            _scorersReporterService.SaveToDatabase<Scorer>(scorerFile.formFile.OpenReadStream());
+            
+            return Ok();
         }
 
         [HttpGet("GetScorersReport")]

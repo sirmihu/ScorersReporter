@@ -4,9 +4,9 @@ namespace ScorersReporter.Services
 {
     public class ReportFromDatabase : IReportFromDatabase
     {
-        private readonly RateExchange _rateExchange;
+        private readonly NBPApiService _rateExchange;
         private readonly IScorerMapToScorerDetails _scorerDetails;
-        public ReportFromDatabase(RateExchange rateExchange, 
+        public ReportFromDatabase(NBPApiService rateExchange, 
             IScorerMapToScorerDetails scorerDetails)
         {
             _rateExchange = rateExchange;
@@ -16,7 +16,7 @@ namespace ScorersReporter.Services
         {
             var scorersDetails = _scorerDetails.ScorerDetails().ToList();
 
-            var rate = await _rateExchange.Rate();
+            var rate = await _rateExchange.GetRate();
 
             var records = scorersDetails.GroupBy(x => x.FullName)
                 .Select(g => new ScorerViewModel
