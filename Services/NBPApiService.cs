@@ -35,6 +35,7 @@ namespace ScorersReporter.Services
                 throw new NbpApiException($"There was some error in api communication. Message:{ex.Message}");
             }
 
+
         }
     }
 }
