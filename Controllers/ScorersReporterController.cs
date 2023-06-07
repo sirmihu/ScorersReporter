@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using ScorersReporter.Application;
 using ScorersReporter.Models;
-using ScorersReporter.Services;
 
 namespace ScorersReporter.Controllers
 {
@@ -8,18 +8,18 @@ namespace ScorersReporter.Controllers
     [Route("[controller]")]
     public class ScorerController : Controller
     {
-        private readonly IScorersReporterService _scorersReporterService;
+        private readonly IScorersReporterApplication _scorersReporterApplication;
 
-        public ScorerController(IScorersReporterService scorersReporterService)
+        public ScorerController(IScorersReporterApplication scorersReporterApplication)
         {
-            _scorersReporterService = scorersReporterService;
+            _scorersReporterApplication = scorersReporterApplication;
         }
 
 
         [HttpPost("SaveFileToDatabase")]
         public ActionResult SaveFileToDatabase([FromForm] ScorerFile scorerFile)
         {
-            _scorersReporterService.SaveToDatabase<Scorer>(scorerFile.formFile.OpenReadStream());
+            _scorersReporterApplication.SaveScorersToDatabase(scorerFile.formFile.OpenReadStream());
             
             return Ok();
         }
@@ -27,15 +27,15 @@ namespace ScorersReporter.Controllers
         [HttpGet("GetScorersReport")]
         public async Task<ActionResult<List<ScorerViewModel>>> GetScorersReport()
         {
-            var records = await _scorersReporterService.DatabaseReport();
+            var records = await _scorersReporterApplication.GetReportFromDatabase();
 
             return Ok(records);
         }
 
         [HttpGet("GetScorersByLeague")]
-        public ActionResult<List<ScorerByLeagueViewModel>> GetScorersByLeague([FromQuery] string league)
+        public ActionResult<List<ScorerByLeagueViewModel>> GetScorersByLeagueReport([FromQuery] string league)
         {
-            var records = _scorersReporterService.LeagueReport(league);
+            var records = _scorersReporterApplication.GetScorersByLeagueReport(league);
 
             return Ok(records);
         }
@@ -43,17 +43,17 @@ namespace ScorersReporter.Controllers
 
 
         [HttpGet("GetTopScorer")]
-        public ActionResult<TopScorerViewModel> GetTopScorer()
+        public ActionResult<TopScorerViewModel> GetTopScorerReport()
         {
-            var records = _scorersReporterService.TopScorerReport();
+            var records = _scorersReporterApplication.GetTopScorerReport();
 
             return Ok(records);
         }
 
         [HttpGet("GetTop5CanadiansClassificationScorers")]
-        public ActionResult<List<CanadianScorerViewModel>> GetTop5CanadiansClassificationScorers()
+        public ActionResult<List<CanadianScorerViewModel>> GetTop5CanadiansClassificationScorersReport()
         {
-            var records = _scorersReporterService.Top5CCS();
+            var records = _scorersReporterApplication.GetTop5CanadianClassificationScorersReport();
 
             return Ok(records);
         }
@@ -61,7 +61,7 @@ namespace ScorersReporter.Controllers
         [HttpGet("SaveScorersReportOnDesktop")]
         public void SaveScorersReportOnDesktop()
         {
-            _scorersReporterService.DownloadCsvFile();
+            _scorersReporterApplication.SaveScorersReportOnDesktop();
         }
 
     }

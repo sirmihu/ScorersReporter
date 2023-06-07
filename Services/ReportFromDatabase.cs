@@ -1,22 +1,24 @@
 ﻿using ScorersReporter.Models;
+using NbpApiServices;
 
 namespace ScorersReporter.Services
 {
     public class ReportFromDatabase : IReportFromDatabase
     {
-        private readonly NBPApiService _rateExchange;
+        private readonly INbpApiService _nbpApiService;
         private readonly IScorerMapToScorerDetails _scorerDetails;
-        public ReportFromDatabase(NBPApiService rateExchange, 
+        public ReportFromDatabase(
+            INbpApiService nbpApiService, 
             IScorerMapToScorerDetails scorerDetails)
         {
-            _rateExchange = rateExchange;
+            _nbpApiService = nbpApiService;
             _scorerDetails = scorerDetails;
         }
-        public async Task<List<ScorerViewModel>> DbReport()
+        public async Task<List<ScorerViewModel>> GetDbReport()
         {
             var scorersDetails = _scorerDetails.ScorerDetails().ToList();
 
-            var rate = await _rateExchange.GetRate();
+            var rate = await _nbpApiService.GetRate();
 
             var records = scorersDetails.GroupBy(x => x.FullName)
                 .Select(g => new ScorerViewModel

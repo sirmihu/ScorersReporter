@@ -9,6 +9,7 @@ namespace ScorersReporter
         {
             CreateMap<Scorer, ScorerDetails>();
         }
+ 
     }
-}
+ }
 

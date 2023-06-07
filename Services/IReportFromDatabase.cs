@@ -4,6 +4,6 @@ namespace ScorersReporter.Services
 {
     public interface IReportFromDatabase
     {
-        Task<List<ScorerViewModel>> DbReport();
+        Task<List<ScorerViewModel>> GetDbReport();
     }
 }
