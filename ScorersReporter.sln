@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScorersReporter", "ScorersReporter.csproj", "{10A8E0D2-C1F0-40FE-A515-2B4FD37B158D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScorersReporter", "ScorersReporter.csproj", "{10A8E0D2-C1F0-40FE-A515-2B4FD37B158D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileServices", "..\FileServices\FileServices.csproj", "{470A791E-7315-4D24-9F47-12BE985FACB8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NbpApiServices", "..\NbpApiService\NbpApiServices.csproj", "{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{10A8E0D2-C1F0-40FE-A515-2B4FD37B158D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A8E0D2-C1F0-40FE-A515-2B4FD37B158D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A8E0D2-C1F0-40FE-A515-2B4FD37B158D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{470A791E-7315-4D24-9F47-12BE985FACB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{470A791E-7315-4D24-9F47-12BE985FACB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{470A791E-7315-4D24-9F47-12BE985FACB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{470A791E-7315-4D24-9F47-12BE985FACB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
