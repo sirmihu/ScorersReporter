@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScorersReporter", "ScorersR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileServices", "..\FileServices\FileServices.csproj", "{470A791E-7315-4D24-9F47-12BE985FACB8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NbpApiServices", "..\NbpApiService\NbpApiServices.csproj", "{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NbpApiServices", "..\NbpApiServices\NbpApiServices.csproj", "{E52578FE-9600-423A-BA62-50381A433FBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{470A791E-7315-4D24-9F47-12BE985FACB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{470A791E-7315-4D24-9F47-12BE985FACB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{470A791E-7315-4D24-9F47-12BE985FACB8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E1C851B0-4FAE-4378-B9AA-1AE106E19D49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E52578FE-9600-423A-BA62-50381A433FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52578FE-9600-423A-BA62-50381A433FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E52578FE-9600-423A-BA62-50381A433FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E52578FE-9600-423A-BA62-50381A433FBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
