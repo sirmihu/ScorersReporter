@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FileServices\FileServices.csproj" />
+    <ProjectReference Include="..\NbpApiServices\NbpApiServices.csproj" />
     <ProjectReference Include="..\NbpApiService\NbpApiServices.csproj" />
   </ItemGroup>
 
