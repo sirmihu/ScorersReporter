@@ -19,7 +19,7 @@ namespace ScorersReporter.Controllers
         [HttpPost("SaveFileToDatabase")]
         public ActionResult SaveFileToDatabase([FromForm] ScorerFile scorerFile)
         {
-            _scorersReporterApplication.SaveScorersToDatabase(scorerFile.formFile.OpenReadStream());
+            _scorersReporterApplication.SaveScorersToDatabase(scorerFile.File.OpenReadStream());
             
             return Ok();
         }

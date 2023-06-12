@@ -12,8 +12,8 @@ using ScorersReporter.Entities;
 namespace ScorersReporter.Migrations
 {
     [DbContext(typeof(ScorersReportDbContext))]
-    [Migration("20221220155157_Init")]
-    partial class Init
+    [Migration("20230612121125_initial-migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ScorersReporter.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ScorersReporter.Models.ScorersReport", b =>
+            modelBuilder.Entity("ScorersReporter.Models.Scorer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

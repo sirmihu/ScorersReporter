@@ -22,64 +22,7 @@ namespace ScorersReporter.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ScorersReporter.Models.MainReport", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Assists")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Club")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Goals")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("League")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MarketValue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MarketValueEUR")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MarketValuePLN")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalAssists")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalGoals")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MainRep");
-                });
-
-            modelBuilder.Entity("ScorersReporter.Models.ScorersReport", b =>
+            modelBuilder.Entity("ScorersReporter.Models.Scorer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

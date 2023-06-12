@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ScorerViewModel>
+
+@{
+    ViewData["Title"] = "Scorers Reporter";
+}
+
+<h2>Scorers Reporter</h2>
+    <a asp-action="AddReservation" class="btn btn-sm btn-primary">Add Reservation</a>
+    <a asp-action="GetReservation" class="btn btn-sm btn-secondary">Get Reservation</a>
+        <form method="post" enctype="multipart/form-data">
+            <input class="form-control" type="file" name="file" />
+            <button class="btn btn-sm btn-primary" type="submit">Upload File</button>
+        </form>
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>Fullname</th>
+                <th>Age</th>
+                <th>Country</th>
+                <th>Club</th>
+                <th>League</th>
+                <th>Total goals</th>
+                <th>Total Assists</th>
+                <th>Market value [EUR]</th>
+                <th>Market value [PLN]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var scorer in Model)
+            {
+                <tr>
+                    <td>@scorer.FullName</td>
+                    <td>@scorer.Age</td>
+                    <td>@scorer.Country</td>
+                    <td>@scorer.Club</td>
+                    <td>@scorer.League</td>
+                    <td>@scorer.TotalGoals</td>
+                    <td>@scorer.TotalAssists</td>
+                    <td>@scorer.MarketValueEUR</td>
+                    <td>@scorer.MarketValuePLN</td>
+                </tr>
+            }
+        </tbody>
+    </table>
