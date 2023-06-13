@@ -2,6 +2,6 @@
 {
     public class ScorerFile
     {
-        public IFormFile formFile { get; set; }
+        public IFormFile File { get; set; }
     }
 }
