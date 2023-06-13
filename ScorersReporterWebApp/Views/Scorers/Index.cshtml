@@ -1,44 +1,92 @@
-﻿@model IEnumerable<ScorerViewModel>
+﻿@model ScorersDashboardViewModel
 
 @{
     ViewData["Title"] = "Scorers Reporter";
 }
 
-<h2>Scorers Reporter</h2>
-    <a asp-action="AddReservation" class="btn btn-sm btn-primary">Add Reservation</a>
-    <a asp-action="GetReservation" class="btn btn-sm btn-secondary">Get Reservation</a>
+<div class="container">
+    <div class="row">
+        <h2>Scorers Reporter</h2>
+        <a asp-action="SaveReportOnDesktop" class="btn btn-sm btn-primary">Add Reservation</a>
+        <a asp-action="GetReservation" class="btn btn-sm btn-secondary">Get Reservation</a>
         <form method="post" enctype="multipart/form-data">
             <input class="form-control" type="file" name="file" />
             <button class="btn btn-sm btn-primary" type="submit">Upload File</button>
         </form>
-    <table class="table table-sm table-striped table-bordered m-2">
-        <thead>
-            <tr>
-                <th>Fullname</th>
-                <th>Age</th>
-                <th>Country</th>
-                <th>Club</th>
-                <th>League</th>
-                <th>Total goals</th>
-                <th>Total Assists</th>
-                <th>Market value [EUR]</th>
-                <th>Market value [PLN]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var scorer in Model)
-            {
-                <tr>
-                    <td>@scorer.FullName</td>
-                    <td>@scorer.Age</td>
-                    <td>@scorer.Country</td>
-                    <td>@scorer.Club</td>
-                    <td>@scorer.League</td>
-                    <td>@scorer.TotalGoals</td>
-                    <td>@scorer.TotalAssists</td>
-                    <td>@scorer.MarketValueEUR</td>
-                    <td>@scorer.MarketValuePLN</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="filterByLeague" placeholder="Filter by league">
+        </div>
+    </div>
+
+    <div id="scorersTable"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-sm table-striped table-bordered m-2">
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var scorer in Model.Top5CanadianScorers)
+                    {
+                        <tr>
+                            <td>@scorer.FullName</td>
+                            <td>@scorer.Points</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row"></div>
+            <div class="row">
+                <label>Top Scorer</label>
+                <table class="table table-sm table-striped table-bordered m-2">
+                    <thead>
+                        <tr>
+                            <th>Fullname</th>
+                            <th>Total goals</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.TopScorer.FullName</td>
+                            <td>@Model.TopScorer.TotalGoals</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(() => {
+            getScorers();
+
+            $('#filterByLeague').on('keyup', () => {
+                getScorers();
+            });
+        });
+
+        function getScorers() {
+            $.ajax({
+                url: '@Url.Action("GetScorers", "Scorers")',
+                datatype: 'html',
+                method: 'GET',
+                data: { league: $('#filterByLeague').val() },
+                success: function (res) {
+                    $('#scorersTable').html(res);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        } 
+    </script>
+}

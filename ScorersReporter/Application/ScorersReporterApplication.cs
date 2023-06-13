@@ -77,7 +77,7 @@ namespace ScorersReporter.Application
             return top5CanadiansClassificationScorers;
         }
 
-        public List<TopScorerViewModel> GetTopScorerReport()
+        public TopScorerViewModel GetTopScorerReport()
         {
             var scorerDetails = _scorerDetails.ScorerDetails();
 
@@ -87,9 +87,7 @@ namespace ScorersReporter.Application
                     FullName = g.Key,
                     TotalGoals = g.Sum(s => s.Goals)
                 })
-                .OrderByDescending(g => g.TotalGoals)
-                .Take(1)
-                .ToList();
+                .OrderByDescending(g => g.TotalGoals).FirstOrDefault();
 
             return topScorer;
         }

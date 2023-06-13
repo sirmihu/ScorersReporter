@@ -7,7 +7,7 @@ namespace ScorersReporter.Application
         Task<List<ScorerViewModel>> GetReportFromDatabase();
         List<ScorerByLeagueViewModel> GetScorersByLeagueReport(string league);
         List<CanadianScorerViewModel> GetTop5CanadianClassificationScorersReport();
-        List<TopScorerViewModel> GetTopScorerReport();
+        TopScorerViewModel GetTopScorerReport();
         Task SaveScorersReportOnDesktop();
         void SaveScorersToDatabase(Stream file);
     }
