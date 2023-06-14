@@ -15,6 +15,14 @@ namespace ScorersReporter.Controllers
             _scorersReporterApplication = scorersReporterApplication;
         }
 
+        [HttpPost("SaveFileToDatabase")]
+        public ActionResult SaveFileToDatabase([FromForm] ScorerFile scorerFile)
+        {
+            _scorersReporterApplication.SaveScorersToDatabase(scorerFile.File.OpenReadStream());
+            
+            return Ok();
+        }
+
         [HttpGet("GetScorersReport")]
         public async Task<ActionResult<List<ScorerViewModel>>> GetScorersReport()
         {
@@ -49,11 +57,9 @@ namespace ScorersReporter.Controllers
             return Ok(records);
         }
 
-        [HttpGet("SaveScorersReportOnDesktop")]
+        [HttpPost("SaveScorersReportOnDesktop")]
         public void SaveScorersReportOnDesktop()
-        {
-            _scorersReporterApplication.SaveScorersReportOnDesktop();
-        }
+            => _scorersReporterApplication.SaveScorersReportOnDesktop();
 
     }
 }

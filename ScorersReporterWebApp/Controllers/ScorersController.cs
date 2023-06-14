@@ -32,6 +32,17 @@ namespace ScorersReporterWebApp.Controllers
             return View(await GetScorersDashboard());
         }
 
+        [HttpPost]
+        public async Task SaveReportOnDesktop()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:7114");
+
+                await client.PostAsync("Scorer/SaveScorersReportOnDesktop", null);
+            }
+        }
+
         public async Task<PartialViewResult> GetScorers(string league)
         {
             var scorers = await GetScorers();

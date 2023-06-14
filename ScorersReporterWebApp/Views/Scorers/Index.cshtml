@@ -16,6 +16,7 @@
         <div class="input-group mb-3">
             <input type="text" class="form-control" id="filterByLeague" placeholder="Filter by league">
         </div>
+        <button type="button" id="saveFileOnDesktop" class="btn btn-success">Save on desktop</button>
     </div>
 
     <div id="scorersTable"></div>
@@ -72,6 +73,11 @@
             $('#filterByLeague').on('keyup', () => {
                 getScorers();
             });
+
+
+            $('#saveFileOnDesktop').on('click', () => {
+                saveFileOnDesktop();
+            });
         });
 
         function getScorers() {
@@ -87,6 +93,17 @@
                     console.log(err);
                 }
             })
-        } 
+        }
+
+        function saveFileOnDesktop() {
+            $.ajax({
+                url: '@Url.Action("SaveReportOnDesktop", "Scorers")',
+                method: 'POST',
+                success: function (res) {},
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        }
     </script>
 }
