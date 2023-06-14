@@ -31,7 +31,7 @@ namespace ScorersReporter.Services
                     Club = g.Select(s => s.Club).FirstOrDefault(),
                     League = g.Select(s => s.League).FirstOrDefault(),
                     MarketValueEUR = g.Select(s => s.MarketValueEUR).FirstOrDefault(),
-                    MarketValuePLN = g.Select(s => s.MarketValueEUR * rate).FirstOrDefault()
+                    MarketValuePLN = g.Select(s => Math.Round(s.MarketValueEUR * rate)).FirstOrDefault()
                 }).ToList();
 
 

@@ -1,7 +1,7 @@
 @model IEnumerable<ScorerViewModel>
 
 <div class="row">
-    <table class="table table-sm table-striped table-bordered m-2">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th>Fullname</th>
@@ -16,19 +16,30 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var scorer in Model)
-            {
-                <tr>
-                    <td>@scorer.FullName</td>
-                    <td>@scorer.Age</td>
-                    <td>@scorer.Country</td>
-                    <td>@scorer.Club</td>
-                    <td>@scorer.League</td>
-                    <td>@scorer.TotalGoals</td>
-                    <td>@scorer.TotalAssists</td>
-                    <td>@scorer.MarketValueEUR</td>
-                    <td>@scorer.MarketValuePLN</td>
-                </tr>
+            @{
+                if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="9" class="text-center">No records found.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var scorer in Model)
+                    {
+                        <tr>
+                            <td>@scorer.FullName</td>
+                            <td>@scorer.Age</td>
+                            <td>@scorer.Country</td>
+                            <td>@scorer.Club</td>
+                            <td>@scorer.League</td>
+                            <td>@scorer.TotalGoals</td>
+                            <td>@scorer.TotalAssists</td>
+                            <td>@string.Format("{0:N0}", scorer.MarketValueEUR)</td>
+                            <td>@string.Format("{0:N0}", scorer.MarketValuePLN)</td>
+                        </tr>
+                    }
+                }
             }
         </tbody>
     </table>
