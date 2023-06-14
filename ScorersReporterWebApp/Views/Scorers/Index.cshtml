@@ -5,25 +5,30 @@
 }
 
 <div class="container">
-    <div class="row">
-        <h2>Scorers Reporter</h2>
-        <a asp-action="SaveReportOnDesktop" class="btn btn-sm btn-primary">Add Reservation</a>
-        <a asp-action="GetReservation" class="btn btn-sm btn-secondary">Get Reservation</a>
-        <form method="post" enctype="multipart/form-data">
-            <input class="form-control" type="file" name="file" />
-            <button class="btn btn-sm btn-primary" type="submit">Upload File</button>
-        </form>
+
+    <div class="alert alert-success" id="successAlert" role="alert"></div>
+
+    <form class="form-inline" method="post" enctype="multipart/form-data">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" id="filterByLeague" placeholder="Filter by league">
+            <input class="form-control" type="file" name="file" />
+            <div class="input-group-prepend">
+                <button class="btn btn-primary" type="submit">Upload file</button>
+                <button type="button" class="btn btn-success" id="saveFileOnDesktop">Save report on desktop</button>
+            </div>
         </div>
-        <button type="button" id="saveFileOnDesktop" class="btn btn-success">Save on desktop</button>
+
+    </form>
+    <div class="row">
+        <h5>General scorers classification</h5>
+        <input type="text" class="form-control" id="filterByLeague" placeholder="Filter by league">
     </div>
 
     <div id="scorersTable"></div>
 
     <div class="row">
         <div class="col-md-6">
-            <table class="table table-sm table-striped table-bordered m-2">
+            <h5>Top 5 - Canadian classification</h5>
+            <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Fullname</th>
@@ -43,24 +48,21 @@
         </div>
 
         <div class="col-md-6">
-            <div class="row"></div>
-            <div class="row">
-                <label>Top Scorer</label>
-                <table class="table table-sm table-striped table-bordered m-2">
-                    <thead>
-                        <tr>
-                            <th>Fullname</th>
-                            <th>Total goals</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>@Model.TopScorer.FullName</td>
-                            <td>@Model.TopScorer.TotalGoals</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h5>Top scorer</h5>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Total goals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.TopScorer.FullName</td>
+                        <td>@Model.TopScorer.TotalGoals</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -68,6 +70,7 @@
 {
     <script>
         $(() => {
+            $("#successAlert").hide();
             getScorers();
 
             $('#filterByLeague').on('keyup', () => {
@@ -99,7 +102,12 @@
             $.ajax({
                 url: '@Url.Action("SaveReportOnDesktop", "Scorers")',
                 method: 'POST',
-                success: function (res) {},
+                success: function (res) {
+                    $("#successAlert").show().fadeTo(2000, 500).slideUp(500, function () {
+                        $("#successAlert").slideUp(500);
+                    });
+                    $('#successAlert').html('Report successfully saved on desktop.');
+                },
                 error: function (err) {
                     console.log(err);
                 }
