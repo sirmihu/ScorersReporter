@@ -9,11 +9,20 @@
   <ItemGroup>
     <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
     <None Remove="Views\Scorers\" />
+    <None Remove="Automapper\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Scorers\" />
+    <Folder Include="Automapper\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScorersReporterApi\ScorersReporterApi.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>
