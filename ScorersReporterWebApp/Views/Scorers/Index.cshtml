@@ -1,0 +1,117 @@
+﻿@model ScorersDashboardViewModel
+
+@{
+    ViewData["Title"] = "Scorers Reporter";
+}
+
+<div class="container">
+
+    <div class="alert alert-success" id="successAlert" role="alert"></div>
+
+    <form class="form-inline" method="post" enctype="multipart/form-data">
+        <div class="input-group mb-3">
+            <input class="form-control" type="file" name="file" />
+            <div class="input-group-prepend">
+                <button class="btn btn-primary" type="submit">Upload file</button>
+                <button type="button" class="btn btn-success" id="saveFileOnDesktop">Save report on desktop</button>
+            </div>
+        </div>
+
+    </form>
+    <div class="row">
+        <h5>General scorers classification</h5>
+        <input type="text" class="form-control" id="filterByLeague" placeholder="Filter by league">
+    </div>
+
+    <div id="scorersTable"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Top 5 - Canadian classification</h5>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var scorer in Model.Top5CanadianScorers)
+                    {
+                        <tr>
+                            <td>@scorer.FullName</td>
+                            <td>@scorer.Points</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-6">
+            <h5>Top scorer</h5>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Total goals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.TopScorer.FullName</td>
+                        <td>@Model.TopScorer.TotalGoals</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(() => {
+            $("#successAlert").hide();
+            getScorers();
+
+            $('#filterByLeague').on('keyup', () => {
+                getScorers();
+            });
+
+
+            $('#saveFileOnDesktop').on('click', () => {
+                saveFileOnDesktop();
+            });
+        });
+
+        function getScorers() {
+            $.ajax({
+                url: '@Url.Action("GetScorers", "Scorers")',
+                datatype: 'html',
+                method: 'GET',
+                data: { league: $('#filterByLeague').val() },
+                success: function (res) {
+                    $('#scorersTable').html(res);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+
+        function saveFileOnDesktop() {
+            $.ajax({
+                url: '@Url.Action("SaveReportOnDesktop", "Scorers")',
+                method: 'POST',
+                success: function (res) {
+                    $("#successAlert").show().fadeTo(2000, 500).slideUp(500, function () {
+                        $("#successAlert").slideUp(500);
+                    });
+                    $('#successAlert').html('Report successfully saved on desktop.');
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+    </script>
+}
