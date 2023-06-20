@@ -99,12 +99,7 @@
         }
 
         function downloadFile() {
-            window.location.href = "https://localhost:5115/Scorer/DownloadScorersReport";
-
-            $("#successAlert").show().fadeTo(2000, 500).slideUp(500, function () {
-                $("#successAlert").slideUp(500);
-            });
-            $('#successAlert').html('Scorers report successfully downloaded.');
+            window.location.href = "https://scorersreporter.azurewebsites.net/Scorer/DownloadScorersReport";
         }
     </script>
 }
