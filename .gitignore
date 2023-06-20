@@ -1,3 +1,7 @@
 .vs
 bin/
 obj/
+.config
+Properties
+/ScorersReporter/ScorersReporter.csproj.user
+/ScorersReporterWebApp/ScorersReporterWebApp.csproj.user
