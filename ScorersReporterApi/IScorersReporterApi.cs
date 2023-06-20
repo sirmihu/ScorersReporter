@@ -10,5 +10,6 @@ public interface IScorersRepoterApi
     Task<TopScorerResponse> GetTopScorerReport();
     Task<IEnumerable<CanadianScorerResponse>> GetTop5CanadiansClassificationScorersReport();
     Task SaveScorersReportOnDesktop();
+    Task DownloadScorersReport();
 }
 

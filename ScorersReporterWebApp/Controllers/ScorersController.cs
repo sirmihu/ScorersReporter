@@ -37,10 +37,6 @@ namespace ScorersReporterWebApp.Controllers
             return View(await GetScorersDashboard());
         }
 
-        [HttpPost]
-        public async Task SaveReportOnDesktop()
-            => await _scorersReporterApi.SaveScorersReportOnDesktop();
-
         public async Task<PartialViewResult> GetScorers(string league)
         {
             var scorersResponse = await _scorersReporterApi.GetScorersReport();

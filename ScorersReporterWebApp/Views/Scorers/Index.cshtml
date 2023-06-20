@@ -13,7 +13,7 @@
             <input class="form-control" type="file" name="file" />
             <div class="input-group-prepend">
                 <button class="btn btn-primary" type="submit">Upload file</button>
-                <button type="button" class="btn btn-success" id="saveFileOnDesktop">Save report on desktop</button>
+                <button type="button" class="btn btn-success" id="downloadCsvReport">Download csv report</button>
             </div>
         </div>
 
@@ -78,8 +78,8 @@
             });
 
 
-            $('#saveFileOnDesktop').on('click', () => {
-                saveFileOnDesktop();
+            $('#downloadCsvReport').on('click', () => {
+                downloadFile();
             });
         });
 
@@ -98,20 +98,8 @@
             })
         }
 
-        function saveFileOnDesktop() {
-            $.ajax({
-                url: '@Url.Action("SaveReportOnDesktop", "Scorers")',
-                method: 'POST',
-                success: function (res) {
-                    $("#successAlert").show().fadeTo(2000, 500).slideUp(500, function () {
-                        $("#successAlert").slideUp(500);
-                    });
-                    $('#successAlert').html('Report successfully saved on desktop.');
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            })
+        function downloadFile() {
+            window.location.href = "https://scorersreporter.azurewebsites.net/Scorer/DownloadScorersReport";
         }
     </script>
 }

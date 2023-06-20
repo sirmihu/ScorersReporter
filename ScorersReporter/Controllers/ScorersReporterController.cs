@@ -1,3 +1,4 @@
+using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using ScorersReporter.Application;
 using ScorersReporter.Models;
@@ -61,5 +62,17 @@ namespace ScorersReporter.Controllers
         public void SaveScorersReportOnDesktop()
             => _scorersReporterApplication.SaveScorersReportOnDesktop();
 
+        [HttpGet("DownloadScorersReport")]
+        [ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+        public async Task<ActionResult> DownloadScorersReport()
+        {
+            var stream = new MemoryStream();
+            await _scorersReporterApplication.SaveScorersToFile(stream);
+
+            stream.Position = 0;
+            Response.Headers.Add("Content-Disposition", "inline");
+
+            return File(stream, "text/csv", "scorers_report.csv");
+        }
     }
 }
