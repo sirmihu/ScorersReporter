@@ -108,6 +108,19 @@ namespace ScorersReporterApi
             }
         }
 
+        public async Task DownloadScorersReport()
+        {
+            try
+            {
+                var httpResponse = await _httpClient.GetAsync(_appSettings.DownloadScorersReport);
+                httpResponse.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                throw new ScorersReporterApiException(ex.Message);
+            }
+        }
+
         private T Deserialize<T>(string httpResponse)
         {
             try

@@ -70,6 +70,8 @@ namespace ScorersReporter.Controllers
             await _scorersReporterApplication.SaveScorersToFile(stream);
 
             stream.Position = 0;
+            Response.Headers.Add("Content-Disposition", "inline");
+
             return File(stream, "text/csv", "scorers_report.csv");
         }
     }
