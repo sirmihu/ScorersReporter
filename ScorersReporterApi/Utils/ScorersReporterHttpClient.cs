@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using ScorersReporterApi.Models;
 
 namespace ScorersReporterApi.Utils
@@ -9,16 +10,18 @@ namespace ScorersReporterApi.Utils
     public class ScorersReporterHttpClient : IScorersReporterHttpClient
     {
         private readonly HttpClient _httpClient;
+        private readonly AppSettings _appSettings;
 
-        public ScorersReporterHttpClient(HttpClient httpClient)
+        public ScorersReporterHttpClient(HttpClient httpClient, IOptions<AppSettings> options)
         {
             _httpClient = httpClient;
+            _appSettings = options.Value;
         }
 
 
         public async Task<HttpResponseMessage> GetAsync(string url)
         {
-            var path = new Uri($"{ScorersReporterApiUrl.ScorersReporterApiBaseUrl}/{url}");
+            var path = new Uri($"{_appSettings.ScorersReporterApiBaseUrl}/{url}");
             var request = new HttpRequestMessage(HttpMethod.Get, path);
 
             return await SendAsync(request);
@@ -26,7 +29,7 @@ namespace ScorersReporterApi.Utils
 
         public async Task<HttpResponseMessage> PostFileAsync(IFormFile file, string url)
         {
-            var path = new Uri($"{ScorersReporterApiUrl.ScorersReporterApiBaseUrl}/{url}");
+            var path = new Uri($"{_appSettings.ScorersReporterApiBaseUrl}/{url}");
             var fileByteArrayContent = await GetFileByteArrayContent(file);
             var formData = GetPreparedFormData(fileByteArrayContent, file.FileName);
 
@@ -39,7 +42,7 @@ namespace ScorersReporterApi.Utils
 
         public async Task<HttpResponseMessage> PostAsync(string url)
         {
-            var path = new Uri($"{ScorersReporterApiUrl.ScorersReporterApiBaseUrl}/{url}");
+            var path = new Uri($"{_appSettings.ScorersReporterApiBaseUrl}/{url}");
             var request = new HttpRequestMessage(HttpMethod.Post, path);
 
             return await SendAsync(request);

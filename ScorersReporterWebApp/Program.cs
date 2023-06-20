@@ -1,5 +1,6 @@
 ﻿using ScorersReporterApi.Utils;
 using SrApi = ScorersReporterApi;
+using ScorersReporterApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient<IScorersReporterHttpClient, ScorersReporterHttpClient>();
 builder.Services.AddTransient<SrApi.IScorersRepoterApi, SrApi.ScorersReporterApi>();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ScorersReporterApiUrl"));
 
 var app = builder.Build();
 
