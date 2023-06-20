@@ -5,16 +5,19 @@ using ScorersReporterApi.Exceptions;
 using ScorersReporterApi.Models;
 using ScorersReporterApi.Reponses;
 using ScorersReporterApi.Utils;
+using Microsoft.Extensions.Options;
 
 namespace ScorersReporterApi
 {
 	public class ScorersReporterApi : IScorersRepoterApi
 	{
         private readonly IScorersReporterHttpClient _httpClient;
+        private readonly AppSettings _appSettings;
 
-		public ScorersReporterApi(IScorersReporterHttpClient httpClient)
+		public ScorersReporterApi(IScorersReporterHttpClient httpClient, IOptions<AppSettings> options)
 		{
             _httpClient = httpClient;
+            _appSettings = options.Value;
 		}
 
         public async Task<IEnumerable<ScorerByLeagueResponse>> GetScorersByLeagueReport()
@@ -26,7 +29,7 @@ namespace ScorersReporterApi
         {
             try
             {
-                var httpResponse = await _httpClient.GetAsync(ScorersReporterApiUrl.GetScoresReport);
+                var httpResponse = await _httpClient.GetAsync(_appSettings.GetScoresReport);
 
                 httpResponse.EnsureSuccessStatusCode();
 
@@ -45,7 +48,7 @@ namespace ScorersReporterApi
         {
             try
             {
-                var httpResponse = await _httpClient.GetAsync(ScorersReporterApiUrl.GetTop5CanadianClassificationScorers);
+                var httpResponse = await _httpClient.GetAsync(_appSettings.GetTop5CanadianClassificationScorers);
 
                 httpResponse.EnsureSuccessStatusCode();
 
@@ -64,7 +67,7 @@ namespace ScorersReporterApi
         {
             try
             {
-                var httpResponse = await _httpClient.GetAsync(ScorersReporterApiUrl.GetTopScorer);
+                var httpResponse = await _httpClient.GetAsync(_appSettings.GetTopScorer);
 
                 httpResponse.EnsureSuccessStatusCode();
 
@@ -83,7 +86,7 @@ namespace ScorersReporterApi
         {
             try
             {
-                var httpResponse = await _httpClient.PostFileAsync(scorerFile.File, ScorersReporterApiUrl.SaveFileToDatabase);
+                var httpResponse = await _httpClient.PostFileAsync(scorerFile.File, _appSettings.SaveFileToDatabase);
                 httpResponse.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
@@ -96,7 +99,7 @@ namespace ScorersReporterApi
         {
             try
             {
-                var httpResponse = await _httpClient.PostAsync(ScorersReporterApiUrl.SaveReportOnDesktop);
+                var httpResponse = await _httpClient.PostAsync(_appSettings.SaveReportOnDesktop);
                 httpResponse.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
