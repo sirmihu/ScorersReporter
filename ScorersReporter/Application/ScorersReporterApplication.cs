@@ -108,5 +108,11 @@ namespace ScorersReporter.Application
             _fileService.WriteCSV(records, filePath);
         }
 
+        public async Task SaveScorersToFile(Stream stream)
+        {
+            var records = await _reportFromDatabase.GetDbReport();
+
+            _fileService.WriteStream(stream, records);
+        }
     }
 }

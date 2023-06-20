@@ -16,6 +16,14 @@ namespace FileServices
             }
         }
 
+        public void WriteStream<T>(Stream stream, IEnumerable<T> records)
+        {
+            using var writer = new StreamWriter(stream, leaveOpen: true);
+            using var csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
+            csv.WriteRecords(records);
+            stream.Flush();
+        }
+
         public IEnumerable<T> ReadCSV<T, TMapping>(Stream file)
             where TMapping : ClassMap
         {

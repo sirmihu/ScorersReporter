@@ -10,5 +10,6 @@ namespace ScorersReporter.Application
         TopScorerViewModel GetTopScorerReport();
         Task SaveScorersReportOnDesktop();
         void SaveScorersToDatabase(Stream file);
+        Task SaveScorersToFile(Stream stream);
     }
 }
